@@ -1,0 +1,42 @@
+name: CI
+
+# Déclencher le workflow sur push ou pull request sur la branche main
+on:
+  push:
+    branches:
+      - develop
+  pull_request:
+    branches:
+      - develop
+
+# Définir les jobs
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout le code
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # 2. Configurer Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      # 3. Installer les dépendances
+      - name: Install dependencies
+        run: npm install
+
+      # 4. Lancer la compilation TypeScript (optionnel)
+      - name: TypeScript check
+        run: npm run tsc
+
+      # 5. Lancer les tests
+      - name: Run tests
+        run: npm test
+
+      # 6. (Optionnel) Construire l'application React
+      - name: Build application
+        run: npm run build
